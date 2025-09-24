@@ -2,6 +2,7 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import "~/styles/globals.css";
 
+import { SessionProvider } from "next-auth/react";
 import Navbar from "~/components/shared/Navbar";
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -22,10 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`}>
       <body>
-        <TRPCReactProvider>
-          <Navbar />
-          {children}
-        </TRPCReactProvider>
+        <SessionProvider>
+          <TRPCReactProvider>
+            <Navbar />
+            {children}
+          </TRPCReactProvider>
+        </SessionProvider>
       </body>
     </html>
   );

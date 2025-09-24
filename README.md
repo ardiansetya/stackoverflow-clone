@@ -7,6 +7,7 @@
 - [x] Initialize profile page UI
 
 ## Day 2 - Auth & Question Submission
+- [x] Login button
 - [ ] Fetch profile info using SSR
 - [ ] Create questions
 - [ ] Fetch questions
