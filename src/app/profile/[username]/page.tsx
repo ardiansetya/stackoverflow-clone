@@ -10,7 +10,7 @@ const ProfilePage = async ({params}: {params: Promise<{username: string}>}) => {
 
 
   return (
-    <main className="container mx-auto max-w-4xl py-8">
+    <main>
       <Card>
         <CardContent>
           <div className="flex flex-col items-center justify-center gap-0.5">

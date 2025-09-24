@@ -15,15 +15,15 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String   @id @default(cuid())
+    title       String
+    description String
+    userId      String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
 
-    @@index([name])
+    author User @relation(fields: [userId], references: [id])
 }
 
 // Necessary for Next auth
