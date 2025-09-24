@@ -37,7 +37,7 @@ const CreatePostCard = () => {
   });
 
   const createPostMutation = api.post.createPost.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert(`Post created `);
       form.reset();
     },
