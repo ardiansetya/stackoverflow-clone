@@ -22,6 +22,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { signIn, useSession } from "next-auth/react";
 
 const createPostFormSchema = z.object({
   title: z.string().min(3).max(100, "max 100 karakter cok"),
@@ -31,15 +32,23 @@ const createPostFormSchema = z.object({
 type CreatePostFormSchema = z.infer<typeof createPostFormSchema>;
 
 const CreatePostCard = () => {
+
+  const {data: session, status, update} = useSession();
+
+
   const form = useForm<CreatePostFormSchema>({
     resolver: zodResolver(createPostFormSchema),
     defaultValues: { title: "", description: "" },
   });
 
+  const apiUtils = api.useUtils()
+
   const createPostMutation = api.post.createPost.useMutation({
-    onSuccess: () => {
+    onSuccess: async() => {
       alert(`Post created `);
       form.reset();
+
+      await apiUtils.post.getAllPosts.invalidate();
     },
   });
 
@@ -50,55 +59,82 @@ const CreatePostCard = () => {
     });
   };
 
+  const handleLogin = async() => {
+    await signIn("google");
+  }
+
   return (
     <Form {...form}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Ask a question</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex gap-4">
-            <Avatar className="flex size-14 items-center justify-center gap-4">
-              <AvatarFallback>{123123}</AvatarFallback>
-              <AvatarImage src={""} />
-            </Avatar>
 
-            <div className="w-full space-y-1.5">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Title of your question" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Describe your question..."
-                        className="min-h-24"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+        {!!session ? (
+          <CardContent>
+            <div className="flex gap-4">
+              <Avatar className="flex size-14 items-center justify-center gap-4">
+                <AvatarFallback>{session.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarImage src={session.user.image ?? ""} alt="image" />
+              </Avatar>
+
+              <div className="w-full space-y-1.5">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="Title of your question"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Describe your question..."
+                          className="min-h-24"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-end">
-          <Button disabled={createPostMutation.isPending} onClick={form.handleSubmit(handleCreatePost)}>
-            {createPostMutation.isPending ? "Posting..." : "Post Your Question"}
-          </Button>
-        </CardFooter>
+          </CardContent>
+        ) : (
+          <CardContent>
+            <div className="space-y-5 flex flex-col items-center justify-center">
+              <p className="text-center text-xl">
+                Please sign in to ask a question
+              </p>
+              <Button onClick={handleLogin} size={"lg"}>Sign In</Button>
+            </div>
+          </CardContent>
+        )}
+
+        {!!session && (
+          <CardFooter className="flex justify-end">
+            <Button
+              disabled={createPostMutation.isPending}
+              onClick={form.handleSubmit(handleCreatePost)}
+            >
+              {createPostMutation.isPending
+                ? "Posting..."
+                : "Post Your Question"}
+            </Button>
+          </CardFooter>
+        )}
       </Card>
     </Form>
   );

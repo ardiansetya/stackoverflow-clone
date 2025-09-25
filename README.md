@@ -12,10 +12,10 @@
 - [x] Create questions
 
 ## Day 3 - Answers
+- [x] Fetch questions
+- [ ] Question detail page using SSR
 - [ ] Submit answers
 - [ ] List of answers to a question
-- [ ] Fetch questions
-- [ ] Question detail page using SSR
 
 ## Day 4 - Polishing & Bonus Features
 - [ ] Cursor-based pagination

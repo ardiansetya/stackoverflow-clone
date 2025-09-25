@@ -1,10 +1,11 @@
 "use client"
 
-import { Button } from "../ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   const session = useSession();
+
 
   const handleLogin = async() => {
     await signIn("google");
@@ -23,6 +24,7 @@ const Navbar = () => {
       <div>
         {session?.data?.user ? (
           <div className="flex items-center gap-4">
+            {/* <Link href={`/profile/${session.data.user.username}`}>{session.data.user.name}</Link> */}
             <Button onClick={handleLogout}>sign out</Button>
           </div>
         ) : (
