@@ -13,9 +13,9 @@
 
 ## Day 3 - Answers
 - [x] Fetch questions
-- [ ] Question detail page using SSR
-- [ ] Submit answers
-- [ ] List of answers to a question
+- [x] Question detail page using SSR
+- [x] Submit answers
+- [x] List of answers to a question
 
 ## Day 4 - Polishing & Bonus Features
 - [ ] Cursor-based pagination

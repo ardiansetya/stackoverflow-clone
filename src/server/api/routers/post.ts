@@ -1,7 +1,10 @@
-import type { create } from "domain";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
   createPost: protectedProcedure
@@ -9,7 +12,7 @@ export const postRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { db, session } = ctx;
 
-     const newPost = await db.post.create({
+      const newPost = await db.post.create({
         data: {
           title: input.title,
           description: input.description,
@@ -19,10 +22,10 @@ export const postRouter = createTRPCRouter({
       return newPost;
     }),
 
-   getAllPosts: protectedProcedure.query(async ({ ctx }) => {
+  getAllPosts: protectedProcedure.query(async ({ ctx }) => {
     const { db } = ctx;
 
-    const post = await db.post.findMany({
+    const posts = await db.post.findMany({
       select: {
         id: true,
         title: true,
@@ -39,9 +42,30 @@ export const postRouter = createTRPCRouter({
       orderBy: { createdAt: "desc" },
     });
 
-    return post;
-  
-   })
-    
+    return posts;
+  }),
 
+  getPostById: publicProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const { db } = ctx;
+      const {postId  } = input;
+
+      const post = await db.post.findUnique({
+        where: { id: postId },
+        select: {
+          title: true,
+          description: true,
+          createdAt: true,
+          author: {
+            select: {
+              username: true,
+              image: true,
+            },
+          },
+        },
+      });
+
+      return post;
+    }),
 });
