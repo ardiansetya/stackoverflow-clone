@@ -4,18 +4,25 @@ import { api } from "~/trpc/react";
 import AnswerCard from "./AnswerCard";
 
 type AnswerListProps = {
-    postId: string;
-}
+  postId: string;
+};
 
 const AnswerList = (props: AnswerListProps) => {
+  const getAnswersQuery = api.answer.getAnswersByPostId.useQuery({
+    postId: props.postId,
+  });
 
-    const getAnswersQuery = api.answer.getAnswersByPostId.useQuery({postId: props.postId});
-
-    console.log(getAnswersQuery.data);
+  console.log(getAnswersQuery.data);
   return (
-    <div>
+    <div className="space-y-6">
       {getAnswersQuery.data?.map((answer) => (
-        <AnswerCard answerDate={answer.createdAt} answerContent={answer.body} username={answer.author.username ?? "user"} userImage={answer.author.image ?? ""} key={answer.id} />
+        <AnswerCard
+          answerDate={answer.createdAt}
+          answerContent={answer.body}
+          username={answer.author.username ?? "user"}
+          userImage={answer.author.image ?? ""}
+          key={answer.id}
+        />
       ))}
     </div>
   );

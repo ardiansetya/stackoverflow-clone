@@ -2,7 +2,6 @@ import Link from "next/link";
 import AnswerList from "~/components/shared/AnswerList";
 import CreateAnswerCard from "~/components/shared/CreateAnswerCard";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Badge } from "~/components/ui/badge";
 import { api } from "~/trpc/server";
 
 const PostDetail = async ({
@@ -12,16 +11,14 @@ const PostDetail = async ({
 }) => {
   const { postId } = await params;
 
-
   const postDetail = await api.post.getPostById({ postId });
 
   return (
     <div className="space-y-8">
-      <div className="rounded-xl border p-6">
+      <div className="rounded-xl border p-6 space-y-4">
         {/* header */}
         <div className="flex justify-between">
           <div className="flex items-center gap-3">
-
             <Avatar className="size-10">
               <AvatarFallback>
                 {postDetail?.author.username?.charAt(0).toUpperCase() ?? ""}
@@ -51,14 +48,13 @@ const PostDetail = async ({
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">{ postDetail?.title}</h1>
+          <h1 className="text-2xl font-semibold">{postDetail?.title}</h1>
           <p className="">{postDetail?.description}</p>
         </div>
       </div>
 
       <div className="space-y-3">
-        <h3 className="text-xl font-semibold">0 answer</h3>
-        <CreateAnswerCard postId={postId} />
+        <CreateAnswerCard  postId={postId}  />
       </div>
 
       <AnswerList postId={postId} />

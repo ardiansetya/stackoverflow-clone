@@ -9,7 +9,6 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Form, FormField } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { api } from "~/trpc/react";
-import { create } from "domain";
 
 const answerFormSchema = z.object({
   body: z.string().min(3).max(2000, "udah yappingnya?"),
@@ -21,6 +20,9 @@ type CreateAnswerCardProps = {
   postId: string;
 };
 
+
+
+
 const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
   const form = useForm<AnswerFormSchema>({
     resolver: zodResolver(answerFormSchema),
@@ -28,6 +30,9 @@ const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
       body: "",
     },
   });
+
+  const {data} = api.answer.getAnswersByPostId.useQuery({postId: props.postId});
+  const answerLength = data?.length ?? 0;
 
   const apiUtils = api.useUtils();
 
@@ -47,7 +52,8 @@ const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
 
 
   return (
-    <div>
+    <div className="space-y-4">
+      <h3 className="text-xl font-semibold">{answerLength} Answer</h3>
       <Form {...form}>
         <Card>
           <CardHeader> Your Answer</CardHeader>

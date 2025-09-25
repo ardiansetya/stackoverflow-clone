@@ -21,7 +21,7 @@ const AnswerCard = (props: AnswerCardProps) => {
           <div className="space-y-1">
             <p className="font-medium">{props.username}</p>
             <p className="text-muted-foreground text-sm">
-              {new Date().toLocaleDateString()}
+              {new Date(props.answerDate).toLocaleDateString()}
             </p>
           </div>
         </div>
