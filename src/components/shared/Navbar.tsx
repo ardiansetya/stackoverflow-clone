@@ -20,13 +20,17 @@ const Navbar = () => {
 
   return (
     <header className="flex h-16 items-center justify-between border border-b p-2 px-6">
-      <Link href="/" className="font-bold text-xl">Q&A Forum</Link>
+      <Link href="/" className="text-xl font-bold">
+        Q&A Forum
+      </Link>
 
       <div>
         {session?.data?.user ? (
           <div className="flex items-center gap-4">
             {/* <Link href={`/profile/${session.data.user.username}`}>{session.data.user.name}</Link> */}
-            <Button onClick={handleLogout}>sign out</Button>
+            <Button variant={"secondary"} onClick={handleLogout}>
+              sign out
+            </Button>
           </div>
         ) : (
           <Button onClick={handleLogin}>sign in with google</Button>

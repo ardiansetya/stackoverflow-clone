@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Form, FormField } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { api } from "~/trpc/react";
+import { useSession } from "next-auth/react";
 
 const answerFormSchema = z.object({
   body: z.string().min(3).max(2000, "udah yappingnya?"),
@@ -30,6 +31,8 @@ const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
       body: "",
     },
   });
+
+  const session = useSession();
 
   const {data} = api.answer.getAnswersByPostId.useQuery({postId: props.postId});
   const answerLength = data?.length ?? 0;
@@ -59,9 +62,9 @@ const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
           <CardHeader> Your Answer</CardHeader>
           <CardContent>
             <div className="flex gap-4">
-              <Avatar>
-                <AvatarFallback>U</AvatarFallback>
-                <AvatarImage src="" />
+              <Avatar className="size-12">
+                <AvatarFallback>{session.data?.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarImage src={session.data?.user.image ?? ""} alt="user" />
               </Avatar>
               <FormField
                 control={form.control}

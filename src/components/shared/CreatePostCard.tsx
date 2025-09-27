@@ -74,7 +74,9 @@ const CreatePostCard = () => {
           <CardContent>
             <div className="flex gap-4">
               <Avatar className="flex size-14 items-center justify-center gap-4">
-                <AvatarFallback>{session.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>
+                  {session.user.name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
                 <AvatarImage src={session.user.image ?? ""} alt="image" />
               </Avatar>
 
@@ -86,8 +88,9 @@ const CreatePostCard = () => {
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Title of your question"
+                          placeholder="Title of your question "
                           {...field}
+                          className="border-accent-foreground border"
                         />
                       </FormControl>
                       <FormMessage />
@@ -102,7 +105,7 @@ const CreatePostCard = () => {
                       <FormControl>
                         <Textarea
                           placeholder="Describe your question..."
-                          className="min-h-24"
+                          className="border-accent-foreground min-h-24 border "
                           {...field}
                         />
                       </FormControl>
@@ -114,11 +117,13 @@ const CreatePostCard = () => {
           </CardContent>
         ) : (
           <CardContent>
-            <div className="space-y-5 flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center space-y-5">
               <p className="text-center text-xl">
                 Please sign in to ask a question
               </p>
-              <Button onClick={handleLogin} size={"lg"}>Sign In</Button>
+              <Button onClick={handleLogin} size={"lg"}>
+                Sign In
+              </Button>
             </div>
           </CardContent>
         )}
@@ -128,6 +133,7 @@ const CreatePostCard = () => {
             <Button
               disabled={createPostMutation.isPending}
               onClick={form.handleSubmit(handleCreatePost)}
+              variant={"secondary"}
             >
               {createPostMutation.isPending
                 ? "Posting..."

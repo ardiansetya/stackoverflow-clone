@@ -1,4 +1,4 @@
-import { MessageSquareMore } from "lucide-react";
+import { ArrowRight, MessageSquareMore } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
@@ -41,36 +41,44 @@ const PostCard = (props: PostCardProps) => {
           </div>
 
           {props.status === "ANSWERED" ? (
-            <Badge variant={"secondary"} className="h-fit">
+            <Badge variant={"default"} className="h-fit">
               Answered
             </Badge>
           ) : (
-            <Badge variant={"destructive"} className="h-fit">
+            <Badge variant={"secondary"} className="h-fit">
               Unnswered
             </Badge>
           )}
         </div>
 
         {/* content */}
-        <Link href={postDataUrl} className="group">
-          <div className="space-y-1">
-            <h3 className="group-hover:text-destructive text-lg font-semibold">
-              {props.title}
-            </h3>
-            <p>{props.description}</p>
-          </div>
-        </Link>
-
-        {/* footer */}
-        <div className="mt-4 flex justify-between border-t pt-3">
-          <div className="text-muted-foreground flex items-center gap-2 text-sm">
-            <MessageSquareMore className="size-4" />
-            <span>{props.totalComments}</span>
-          </div>
-
-          <Link href={postDataUrl} className="text-primary text-sm">
-            View Post
+        <div className="group hover:cursor-pointer ">
+          <Link href={postDataUrl} >
+            <div className="space-y-1">
+              <h3 className="group-hover:text-muted-foreground  text-lg font-semibold">
+                {props.title}
+              </h3>
+              <p>{props.description}</p>
+            </div>
           </Link>
+
+          {/* footer */}
+          <div className="mt-4 flex justify-between border-t pt-3">
+            <div className="text-muted-foreground flex items-center gap-2 text-sm">
+              <MessageSquareMore className="size-4" />
+              <span>{props.totalComments}</span>
+            </div>
+
+            <div className="flex items-center gap-0.5">
+              <Link
+                href={postDataUrl}
+                className="text-primary group-hover:text-muted-foreground  text-sm "
+              >
+                View Post
+              </Link>
+              <ArrowRight className="size-4" />
+            </div>
+          </div>
         </div>
       </div>
     </>

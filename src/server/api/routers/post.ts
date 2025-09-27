@@ -31,12 +31,18 @@ export const postRouter = createTRPCRouter({
         title: true,
         description: true,
         createdAt: true,
+        answers: true,
         author: {
           select: {
             username: true,
             image: true,
           },
         },
+        _count: {
+          select: {
+            answers: true,
+          }
+        }
       },
 
       orderBy: { createdAt: "desc" },

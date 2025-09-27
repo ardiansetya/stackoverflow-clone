@@ -19,5 +19,5 @@
 
 ## Day 4 - Polishing & Bonus Features
 - [ ] Cursor-based pagination
-- [ ] Mark as solved feature
-- [ ] Styling
+- [x] Mark as solved feature
+- [x] Styling
