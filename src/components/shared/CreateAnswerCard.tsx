@@ -1,15 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { api } from "~/trpc/react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Form, FormField } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import { api } from "~/trpc/react";
-import { useSession } from "next-auth/react";
 
 const answerFormSchema = z.object({
   body: z.string().min(3).max(2000, "udah yappingnya?"),
@@ -21,10 +21,7 @@ type CreateAnswerCardProps = {
   postId: string;
 };
 
-
-
-
-const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
+const CreateAnswerCard = (props: CreateAnswerCardProps) => {
   const form = useForm<AnswerFormSchema>({
     resolver: zodResolver(answerFormSchema),
     defaultValues: {
@@ -34,25 +31,27 @@ const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
 
   const session = useSession();
 
-  const {data} = api.answer.getAnswersByPostId.useQuery({postId: props.postId});
+  const { data } = api.answer.getAnswersByPostId.useQuery({
+    postId: props.postId,
+  });
   const answerLength = data?.length ?? 0;
 
   const apiUtils = api.useUtils();
 
   const createAnswerMutation = api.answer.createAnswer.useMutation({
-    onSuccess: async() => {
+    onSuccess: async () => {
       alert("Answer created");
       form.reset();
 
-     await apiUtils.answer.getAnswersByPostId.invalidate({postId: props.postId});
+      await apiUtils.answer.getAnswersByPostId.invalidate({
+        postId: props.postId,
+      });
     },
   });
 
-
   const handleSubmit = (values: AnswerFormSchema) => {
-    createAnswerMutation.mutate({ body: values.body, postId: props.postId  });
+    createAnswerMutation.mutate({ body: values.body, postId: props.postId });
   };
-
 
   return (
     <div className="space-y-4">
@@ -63,14 +62,20 @@ const CreateAnswerCard = ( props: CreateAnswerCardProps) => {
           <CardContent>
             <div className="flex gap-4">
               <Avatar className="size-12">
-                <AvatarFallback>{session.data?.user.name?.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>
+                  {session.data?.user.name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
                 <AvatarImage src={session.data?.user.image ?? ""} alt="user" />
               </Avatar>
               <FormField
                 control={form.control}
                 name="body"
                 render={({ field }) => (
-                  <Textarea placeholder="Your Answer" {...field} />
+                  <Textarea
+                    className="border-accent-foreground border"
+                    placeholder="Your Answer"
+                    {...field}
+                  />
                 )}
               />
             </div>

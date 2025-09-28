@@ -1,12 +1,11 @@
-import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type AnswerCardProps = {
   username: string;
   userImage: string;
   answerDate: Date;
   answerContent: string;
-}
+};
 
 const AnswerCard = (props: AnswerCardProps) => {
   return (
@@ -28,11 +27,9 @@ const AnswerCard = (props: AnswerCardProps) => {
       </div>
 
       {/* content */}
-      <p>
-        {props.answerContent}
-      </p>
+      <p>{props.answerContent}</p>
     </div>
   );
-}
+};
 
-export default AnswerCard
+export default AnswerCard;

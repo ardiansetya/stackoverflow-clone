@@ -3,6 +3,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { ToggleTheme } from "./ToggleTheme";
 
 const Navbar = () => {
   const session = useSession();
@@ -27,7 +28,7 @@ const Navbar = () => {
       <div>
         {session?.data?.user ? (
           <div className="flex items-center gap-4">
-            {/* <Link href={`/profile/${session.data.user.username}`}>{session.data.user.name}</Link> */}
+            <ToggleTheme/>
             <Button variant={"secondary"} onClick={handleLogout}>
               sign out
             </Button>

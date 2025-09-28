@@ -40,6 +40,9 @@ export const answerRouter = createTRPCRouter({
             },
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        }
       });
       return answers;
     }),

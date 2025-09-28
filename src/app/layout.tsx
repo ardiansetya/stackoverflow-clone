@@ -1,10 +1,10 @@
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
 import "~/styles/globals.css";
 
 import { SessionProvider } from "next-auth/react";
 import Navbar from "~/components/shared/Navbar";
 import { TRPCReactProvider } from "~/trpc/react";
+import { ThemeProvider } from "~/components/shared/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -17,17 +17,23 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`font-sans`}>
+    <html lang="en" className={`font-sans`} suppressHydrationWarning>
       <body>
-        <SessionProvider>
-          <TRPCReactProvider>
-            <Navbar />
-            <main className="container mx-auto max-w-4xl py-8">
-
-            {children}
-            </main>
-          </TRPCReactProvider>
-        </SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProvider>
+            <TRPCReactProvider>
+              <Navbar />
+              <main className="container mx-auto max-w-4xl py-8">
+                {children}
+              </main>
+            </TRPCReactProvider>
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

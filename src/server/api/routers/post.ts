@@ -63,6 +63,7 @@ export const postRouter = createTRPCRouter({
           title: true,
           description: true,
           createdAt: true,
+
           author: {
             select: {
               username: true,
@@ -70,6 +71,7 @@ export const postRouter = createTRPCRouter({
             },
           },
         },
+        
       });
 
       return post;
